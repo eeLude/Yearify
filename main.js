@@ -1,34 +1,38 @@
 //api comes here
-
 const APIController = (function() {
-    // Käyttäjän spotify id:t
-    const clientId = '';
-    const clientSecret = '';
+    
+    const clientId = '46df134103fc4119bf515625f8280155';
+    const clientSecret = '2ee599abe5434cbcaaf2401ce5a9b622';
 
-    // Yksityinen metodi jolla haetaan tokeni Spotfy apilta
+    // private methods
     const _getToken = async () => {
-        // Fetch pyyntö apin endpointtiin
+
         const result = await fetch('https://accounts.spotify.com/api/token', {
             method: 'POST',
             headers: {
                 'Content-Type' : 'application/x-www-form-urlencoded', 
-                // Authorization header with Basic Authentication
                 'Authorization' : 'Basic ' + btoa(clientId + ':' + clientSecret)
             },
-            // Request body with grant_type parameter
             body: 'grant_type=client_credentials'
         });
 
-        // Extract access token from the response
         const data = await result.json();
         return data.access_token;
     }
-
     
-
     return {
         getToken() {
             return _getToken();
         }
     }
 })();
+
+
+//testi tuleeko token
+APIController.getToken()
+  .then(token => {
+    console.log(token); 
+  })
+  .catch(error => {
+    console.error('Error fetching token:', error);
+  });
