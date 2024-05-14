@@ -1,11 +1,9 @@
-//api comes here
-const APIController = (function() {
-    
+
     const clientId = '46df134103fc4119bf515625f8280155'; // annetaan spotify kredentiaalit
     const clientSecret = '2ee599abe5434cbcaaf2401ce5a9b622'; // annetaan spotify kredentiaalit
 
-    // private methods
-    const _getToken = async () => {
+    
+    const _getToken = async () => { // palauttaa api tokenin
 
         const result = await fetch('https://accounts.spotify.com/api/token', {
             method: 'POST',
@@ -20,49 +18,39 @@ const APIController = (function() {
         return data.access_token;
     }
 
-    const _getCategories = async (token) => {
+    async function searchTracks() { // hakee biisit annetun vuoden perusteella
+        const year = document.getElementById('yearInput').value;
+        const token = await _getToken();
 
-        const result = await fetch(`https://api.spotify.com/v1/browse/categories`, {
-            method: 'GET',
-            headers: { 'Authorization' : 'Bearer ' + token}
+        const response = await fetch(`https://api.spotify.com/v1/search?q=year:${year}&type=track`, {
+            headers: {
+                'Authorization': 'Bearer ' + token
+            }
         });
 
-        const data = await result.json();
-        return data.categories.items;
+        const data = await response.json();
+        const tracks = data.tracks.items;
+
+        const tracksList = document.getElementById('tracksList');
+        tracksList.innerHTML = '';
+
+        tracks.forEach(track => {
+            const trackElement = document.createElement('div');
+
+            const imgElement = document.createElement('img');
+            imgElement.src = track.album.images[0].url;
+            imgElement.alt = 'Track Image';
+            imgElement.style.width = '100px';
+            trackElement.appendChild(imgElement);
+
+            const nameElement = document.createElement('p');
+            nameElement.textContent = track.name;
+            trackElement.appendChild(nameElement);
+
+            const artistElement = document.createElement('p');
+            artistElement.textContent = track.artists.map(artist => artist.name).join(', ');
+            trackElement.appendChild(artistElement);
+
+            tracksList.appendChild(trackElement);
+        });
     }
-
-    const _getCategoryPlaylists = async (token) => {
-        category_id = "0JQ5DAudkNjCgYMM0TZXDw";
-        const limit = 10;
-        const result = await fetch(`https://api.spotify.com/v1/browse/categories/${category_id}/playlists?limit=${limit}`, { // käytetään template literaalia, jolloin funktion parametrin voi syöttää suoraa merkkijonoon
-            method: 'GET',
-            headers: { 'Authorization' : 'Bearer ' + token}
-        });
-
-        const data = await result.json();
-        return data.playlists.items;
-    } 
-
-    return {
-        getToken() {
-            return _getToken();
-        },
-        getCategories(token) {
-            return _getCategories(token);
-        },
-        getCategoryPlaylists(token, category_id) {
-            return _getCategoryPlaylists(token, category_id);
-        }
-    }
-})();
-
-// testailua, logataan konsoliin apin palauttamaa dataa
-APIController.getToken().then(token => {
-    APIController.getCategories(token).then(categories => {
-        console.log(categories); // Log categories
-        const categoryId = categories[5].id; // Assuming you want to get playlists for the first category
-        APIController.getCategoryPlaylists(token, categoryId).then(playlists => {
-            console.log(playlists); // Log playlists
-        });
-    });
-});

@@ -7,14 +7,12 @@
     <title>Yearify</title>
 </head>
 <body>
-    <h1>Yearify</h1>
-    <p>Type your favourite year of music</p>
-    
-    <div class="container">
-        <form>
-            <input type="text" placeholder="Type your favourite year">
-            <button type="submit">Search</button>
-        </form>
+    <div id="container">
+        <input type="text" id="yearInput" placeholder="Enter year">
+        <button onclick="searchTracks()">Search</button>
+        <div id="tracksList"></div>
+    </div>
+
     <script src="main.js"></script> 
     </div>
 </body>
