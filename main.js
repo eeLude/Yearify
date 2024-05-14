@@ -54,3 +54,23 @@
             tracksList.appendChild(trackElement);
         });
     }
+
+    const _getGenres = async (token) => {
+
+        const result = await fetch(`https://api.spotify.com/v1/browse/categories?locale=en_US`, {
+            method: 'GET',
+            headers: { 'Authorization' : 'Bearer ' + token}
+        });
+
+        const data = await result.json();
+        return data.categories.items;
+    }
+
+    async function main() { // testi millaista dataa _getGenres antaa
+        const token = await _getToken();
+        const genres = await _getGenres(token);
+        console.log(genres);
+    }
+    
+    main();
+    
