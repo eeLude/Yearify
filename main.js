@@ -29,33 +29,40 @@
     async function searchTracks() { // Apilta data vuoden , genren, tai vuoden ja genren perusteella
         const year = document.getElementById('yearInput').value;
         const genre = document.getElementById('genreInput').value;
+      
         let query = '';
     
         if (year && genre) {
             query = `year:${year} genre:"${genre}"`;
-            console.log("Both");
         } else if (year) {
             query = `year:${year}`;
-            console.log("year only");
         } else if (genre) {
             query = `genre:"${genre}"`;
-            console.log("genre only");
         } else {
-            console.error('Invalid search parameters');
+            const tracksList = document.getElementById('tracksList');
+            tracksList.innerHTML = '<p>Please enter year or genre</p>';
             return;
         }
     
         const token = await _getToken();
     
-        const response = await fetch(`https://api.spotify.com/v1/search?q=${query}&type=track`, {
+        const response = await fetch(`https://api.spotify.com/v1/search?q=${query}&type=track&limit=50`, {
             headers: {
                 'Authorization': 'Bearer ' + token
             }
         });
     
         const data = await response.json();
+
+        if (!data.tracks || data.tracks.total === 0) {
+            const tracksList = document.getElementById('tracksList');
+            tracksList.innerHTML = '<p>No tracks found for the entered genre or year.</p>';
+            return;
+        }
+
         console.log(data);
-        const tracks = data.tracks.items;
+        const tracks = data.tracks.items.sort((a, b) => b.popularity - a.popularity); // sorttaus track popularity valuen mukaan
+
         
         const tracksList = document.getElementById('tracksList');
         tracksList.innerHTML = '';
@@ -70,11 +77,11 @@
             trackElement.appendChild(imgElement);
     
             const nameElement = document.createElement('p');
-            nameElement.textContent = track.name;
+            nameElement.textContent = "Song: " + track.name;
             trackElement.appendChild(nameElement);
     
             const artistElement = document.createElement('p');
-            artistElement.textContent = track.artists.map(artist => artist.name).join(', ');
+            artistElement.textContent = "Artist: " + track.artists.map(artist => artist.name).join(', ');
             trackElement.appendChild(artistElement);
     
             const addButton = document.createElement('button');
