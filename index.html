@@ -9,13 +9,16 @@
 <body>
     <h2> Search tracks by year and genre</h2>
     <div id="container">
+        <select id="genreSelect" onchange="checkGenre()">
+            <option value="">Select Genre</option>
+            <option value="noGenre">No genre</option>
+        </select>
         <input type="text" id="yearInput" placeholder="Enter year">
         <button onclick="searchTracks()">Search</button>
         <input type="text" id="genreInput" placeholder="Enter Genre">
         <button onclick="searchTracksByGenre()">Search</button>
         <div id="tracksList"></div>
     </div>
-
     <script src="main.js"></script> 
     </div>
 </body>
