@@ -7,15 +7,14 @@
     <title>Yearify</title>
 </head>
 <body>
-    <h2> Search tracks by year and genre</h2>
+    <h2>Search tracks</h2>
     <div id="container">
         <input type="text" id="yearInput" placeholder="Enter year">
-        <button onclick="searchTracks('year')">Search by Year</button>
         <input type="text" id="genreInput" placeholder="Enter Genre">
-        <button onclick="searchTracksByGenre('genre')">Search by Genre</button>
+        <button onclick="searchTracks()">Search</button>
         <div id="tracksList"></div>
     </div>
+    <iframe id="spotifyPlayer" style="border-radius:12px" src="https://open.spotify.com/embed/track/59FLvGwCtiv7Bvc9ZhdPVO?utm_source=generator" width="30%" height="352" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
     <script src="main.js"></script> 
-    </div>
 </body>
 </html>
