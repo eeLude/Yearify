@@ -91,3 +91,51 @@
             tracksList.appendChild(trackElement);
         });
     }    
+
+    async function searchTracks(searchType) { // mahdollisestaan Year ja genre hakuyhdistelmä
+        let query;
+        if (searchType === 'year') {
+            const year = document.getElementById('yearInput').value;
+            query = `year:${year}`;
+        } else if (searchType === 'genre') {
+            const genre = document.getElementById('genreInput').value;
+            query = `genre:"${genre}"`;
+        } else {
+            console.error('Invalid search type');
+            return;
+        }
+    
+        const token = await _getToken();
+    
+        const response = await fetch(`https://api.spotify.com/v1/search?q=${query}&type=track`, {
+            headers: {
+                'Authorization': 'Bearer ' + token
+            }
+        });
+    
+        const data = await response.json();
+        const tracks = data.tracks.items;
+    
+        const tracksList = document.getElementById('tracksList');
+        tracksList.innerHTML = '';
+    
+        tracks.forEach(track => {
+            const trackElement = document.createElement('div');
+    
+            const imgElement = document.createElement('img');
+            imgElement.src = track.album.images[0].url;
+            imgElement.alt = 'Track Image';
+            imgElement.style.width = '100px';
+            trackElement.appendChild(imgElement);
+    
+            const nameElement = document.createElement('p');
+            nameElement.textContent = track.name;
+            trackElement.appendChild(nameElement);
+    
+            const artistElement = document.createElement('p');
+            artistElement.textContent = track.artists.map(artist => artist.name).join(', ');
+            trackElement.appendChild(artistElement);
+    
+            tracksList.appendChild(trackElement);
+        });
+    }
