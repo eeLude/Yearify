@@ -86,7 +86,7 @@
             trackElement.appendChild(artistElement);
         //lisätään nappi jolla voi lisätä kappaleen spotifyn embedded esikuunteluun
             const addButton = document.createElement('button');
-            addButton.textContent = 'Add to Playlist';
+            addButton.textContent = 'Preview';
             addButton.addEventListener('click', () => {
                 updateSpotifyPlayer(track.id);
             });
