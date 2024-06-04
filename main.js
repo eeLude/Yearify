@@ -1,6 +1,6 @@
 // spotify API:n tunnistetiedot
-    const clientId = '46df134103fc4119bf515625f8280155'; // annetaan spotify kredentiaalit
-    const clientSecret = '2ee599abe5434cbcaaf2401ce5a9b622'; // annetaan spotify kredentiaalit
+    const clientId = 'Add Client ID'; // annetaan spotify kredentiaalit
+    const clientSecret = 'Add Client Secret'; // annetaan spotify kredentiaalit
 
     //Funkio jolla saadaan spotifyn API-tokeni
     const _getToken = async () => { // palauttaa api tokenin
