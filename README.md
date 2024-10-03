@@ -1,5 +1,7 @@
 ﻿# Yearify
 
+Made by: EKuuselaa and eeLude
+
 Loppuprojekti Javascript-kurssista.
 Vanilla Javascriptilla toimiva Web-sovellus, jolla voidaan hakea
 vuoden tai genren perusteella Spotifysta kappaleita.
